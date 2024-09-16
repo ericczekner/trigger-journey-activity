@@ -252,7 +252,7 @@ define(["postmonger"], function (Postmonger) {
           " with selectedAssetId: " +
           selectedAssetId
       );
-      if (asset.id === selectedAssetId) {
+      if (String(asset.id) === String(selectedAssetId)) {
         console.log(
           "Match found, setting radio as checked for asset.id: " + asset.id
         );
