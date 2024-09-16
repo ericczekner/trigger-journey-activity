@@ -109,16 +109,17 @@ define(["postmonger"], function (Postmonger) {
       .closest("label")
       .text()
       .trim();
-    payload.arguements.execute.inArguments = [
-      {
-        contactKey: "{{Contact.Key}}",
-        selectedAssetId: selectedAssetId || null,
-        selectedAssetName: selectedAssetName || "No asset selected",
-        payload: selectedAssetName,
-        uuid: uniqueId, // Use the existing or new unique identifier
-      },
-    ];
+    // payload.arguements.execute.inArguments = [
+    //   {
+    //     contactKey: "{{Contact.Key}}",
+    //     selectedAssetId: selectedAssetId || null,
+    //     selectedAssetName: selectedAssetName || "No asset selected",
+    //     payload: selectedAssetName,
+    //     uuid: uniqueId, // Use the existing or new unique identifier
+    //   },
+    // ];
 
+    console.log("Payload", payload);
     payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
   }
