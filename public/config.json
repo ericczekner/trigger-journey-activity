@@ -1,81 +1,67 @@
 {
-    "workflowApiVersion": "1.1",
-    "metaData":
-    {
-        "icon": "images/icon.png",
-        "iconSmall": "images/iconSmall.png",
-        "backgroundColor": "#9f8e69",
-        "category": "Custom"
-    },
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "images/icon.png",
+    "iconSmall": "images/iconSmall.png",
+    "backgroundColor": "#9f8e69",
+    "category": "Custom"
+  },
 
-    "type": "REST",
-    "lang":
-    {
-        "en-US":
-        {
-            "name": "JourneyTrigger",
-            "description": "An activity that helps you trigger a journey from another journey.",
-            "step1Label": "Configure Activity"
-        }
-    },
-
-      "arguments": {
-        "execute": {
-          "inArguments": [
-            {
-            }
-          ],
-          "outArguments": [
-          ],
-          "url": "https://YOUR_HEROKU_APP_URL/journeybuilder/execute"
-        }
-      },
-    
-    "configurationArguments":
-    {
-        "applicationExtensionKey": "",
-        "save":
-        {
-            "url": "https://YOUR_HEROKU_APP_URL/journeybuilder/save",
-            "verb": "POST"
-        },
-        "publish":
-        {
-            "url": "https://YOUR_HEROKU_APP_URL/journeybuilder/publish",
-            "verb": "POST"
-        },
-        "stop":
-        {
-            "url": "https://YOUR_HEROKU_APP_URL/journeybuilder/stop",
-            "verb": "POST"
-        },
-        "validate":
-        {
-            "url": "https://YOUR_HEROKU_APP_URL/journeybuilder/validate",
-            "verb": "POST"
-        }
-    },
-    "userInterfaces":
-    {
-        "configModal": {
-            "height": 500,
-            "width": 500,
-            "fullscreen": false
-        },
-        "runningModal": {
-            "url": "runningModal.html"
-        },
-        "runningHover": {
-            "url": "runningHover.html"
-        }
-    },
-    "schema": 
-    {
-        "arguments":{
-            "execute": {
-                "inArguments": [],
-                "outArguments": []
-            }
-        }
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "name": "JourneyTrigger",
+      "description": "An activity that helps you trigger a journey from another journey.",
+      "step1Label": "Configure Activity"
     }
+  },
+
+  "arguments": {
+    "execute": {
+      "inArguments": [{}],
+      "outArguments": [],
+      "url": "https://trigger-journey-activity-28b33510948b.herokuapp.com/journeybuilder/execute"
+    }
+  },
+
+  "configurationArguments": {
+    "applicationExtensionKey": "",
+    "save": {
+      "url": "https://trigger-journey-activity-28b33510948b.herokuapp.com/journeybuilder/save",
+      "verb": "POST"
+    },
+    "publish": {
+      "url": "https://trigger-journey-activity-28b33510948b.herokuapp.com/journeybuilder/publish",
+      "verb": "POST"
+    },
+    "stop": {
+      "url": "https://trigger-journey-activity-28b33510948b.herokuapp.com/journeybuilder/stop",
+      "verb": "POST"
+    },
+    "validate": {
+      "url": "https://trigger-journey-activity-28b33510948b.herokuapp.com/journeybuilder/validate",
+      "verb": "POST"
+    }
+  },
+  "userInterfaces": {
+    "configModal": {
+      "height": 500,
+      "width": 500,
+      "fullscreen": false
+    },
+    "runningModal": {
+      "url": "runningModal.html"
+    },
+    "runningHover": {
+      "url": "runningHover.html"
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [],
+        "outArguments": []
+      }
+    }
+  }
 }
