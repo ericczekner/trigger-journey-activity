@@ -114,7 +114,7 @@ define(["postmonger"], function (Postmonger) {
         contactKey: "{{Contact.Key}}",
         selectedAssetId: selectedAssetId || null,
         selectedAssetName: selectedAssetName || "No asset selected",
-        payload: entrySourceData,
+        payload: selectedAssetName,
         uuid: uniqueId, // Use the existing or new unique identifier
       },
     ];
