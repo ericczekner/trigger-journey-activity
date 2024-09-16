@@ -234,7 +234,6 @@ define(["postmonger"], function (Postmonger) {
       },
     });
   }
-
   function populateAssets(assets, selectedAssetId = null) {
     var $radioGroup = $("#asset-radios");
     $radioGroup.empty();
@@ -247,7 +246,16 @@ define(["postmonger"], function (Postmonger) {
         value: asset.id,
       });
 
+      console.log(
+        "Comparing asset.id: " +
+          asset.id +
+          " with selectedAssetId: " +
+          selectedAssetId
+      );
       if (asset.id === selectedAssetId) {
+        console.log(
+          "Match found, setting radio as checked for asset.id: " + asset.id
+        );
         $radio.prop("checked", true);
       }
 
