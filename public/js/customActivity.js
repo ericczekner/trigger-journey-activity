@@ -109,18 +109,16 @@ define(["postmonger"], function (Postmonger) {
       .closest("label")
       .text()
       .trim();
-    console.log("{{Contact.Key}}" + selectedAssetId + selectedAssetName);
-    console.log(payload.arguments.execute.inArguments);
-    console.log(payload.arguements.execute.inArguments);
-    // payload.arguements.execute.inArguments = [
-    //   {
-    //     contactKey: "{{Contact.Key}}",
-    //     selectedAssetId: selectedAssetId || null,
-    //     selectedAssetName: selectedAssetName || "No asset selected",
-    //     payload: selectedAssetName,
-    //     uuid: uniqueId, // Use the existing or new unique identifier
-    //   },
-    // ];
+
+    payload.arguments.execute.inArguments = [
+      {
+        contactKey: "{{Contact.Key}}",
+        selectedAssetId: selectedAssetId || null,
+        selectedAssetName: selectedAssetName || "No asset selected",
+        payload: selectedAssetName,
+        uuid: uniqueId, // Use the existing or new unique identifier
+      },
+    ];
 
     console.log("Payload", payload);
     payload.metaData.isConfigured = true;
