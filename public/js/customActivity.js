@@ -238,8 +238,9 @@ define(["postmonger"], function (Postmonger) {
   function populateAssets(assets, selectedAssetId = null) {
     var $radioGroup = $("#asset-radios");
     $radioGroup.empty();
-
+    console.log("Selected Asset: " + selectedAssetId);
     assets.forEach(function (asset) {
+      console.log(asset);
       var $radio = $("<input>", {
         type: "radio",
         name: "asset",
