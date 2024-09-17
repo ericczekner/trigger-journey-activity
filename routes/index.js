@@ -8,7 +8,7 @@ var activity = require("./activity");
  */
 exports.index = function (req, res) {
   if (!req.session.token) {
-    console.log("Error on the index");
+    console.log("Error on the index loading");
     res.render("index", {
       title: "Unauthenticated",
       errorMessage:
