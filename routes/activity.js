@@ -152,6 +152,8 @@ async function fetchJourneys(token) {
         "Content-Type": "application/json",
       },
     });
+
+    console.log(response.data.items.map((journey) => journey.defaults));
     return response.data;
   } catch (error) {
     console.error("Error fetching journeys:", error);
@@ -165,7 +167,7 @@ exports.getAssets = async function (req, res) {
   try {
     const token = await retrieveToken();
     const assets = await fetchAssets(token);
-    console.log("Assets:", assets);
+
     res.status(200).json(assets);
   } catch (error) {
     console.error("Error retrieving assets:", error);

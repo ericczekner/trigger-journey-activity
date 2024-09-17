@@ -86,7 +86,6 @@ define(["postmonger"], function (Postmonger) {
   }
 
   function save() {
-    var payload = {};
     var selectedJourneyId = $('input[name="journey"]:checked').val();
     var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
     var selectedJourneyName = $('input[name="journey"]:checked')
@@ -105,22 +104,22 @@ define(["postmonger"], function (Postmonger) {
       },
     ];
 
-    var selectedAssetId = $('input[name="asset"]:checked').val();
-    var selectedAssetName = $('input[name="asset"]:checked')
-      .closest("label")
-      .text()
-      .trim();
-    console.log("Selected Asset: " + selectedAssetId);
-    console.log("Selected Asset Name:" + selectedAssetName);
-    payload.arguments.execute.inArguments = [
-      {
-        contactKey: "{{Contact.Key}}",
-        selectedAssetId: selectedAssetId || null,
-        selectedAssetName: selectedAssetName || "No asset selected",
-        payload: selectedAssetName,
-        uuid: uniqueId, // Use the existing or new unique identifier
-      },
-    ];
+    // var selectedAssetId = $('input[name="asset"]:checked').val();
+    // var selectedAssetName = $('input[name="asset"]:checked')
+    //   .closest("label")
+    //   .text()
+    //   .trim();
+    // console.log("Selected Asset: " + selectedAssetId);
+    // console.log("Selected Asset Name:" + selectedAssetName);
+    // payload.arguments.execute.inArguments = [
+    //   {
+    //     contactKey: "{{Contact.Key}}",
+    //     selectedAssetId: selectedAssetId || null,
+    //     selectedAssetName: selectedAssetName || "No asset selected",
+    //     payload: selectedAssetName,
+    //     uuid: uniqueId, // Use the existing or new unique identifier
+    //   },
+    // ];
 
     console.log("Payload", payload);
     payload.metaData.isConfigured = true;
@@ -137,6 +136,7 @@ define(["postmonger"], function (Postmonger) {
       },
       success: function (response) {
         journeys = response.items.filter((journey) => {
+          console.log("Journey default: " + journey.defaults);
           if (journey.defaults && journey.defaults.email) {
             let apiEventEmail = journey.defaults.email.find((email) =>
               email.includes("APIEvent")
@@ -214,7 +214,6 @@ define(["postmonger"], function (Postmonger) {
       },
       success: function (response) {
         const assets = response.items;
-        console.log("Assets:", assets[0].thumbnail);
 
         if (assets.length === 0) {
           $("#asset-loading-message").text(
