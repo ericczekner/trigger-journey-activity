@@ -1,0 +1,45 @@
+{
+  "name": "sfmc-fuelsdk-node",
+  "version": "2.4.0",
+  "description": "Node SDK for performing REST, SOAP, Auth, and js object API calls with Salesforce Marketing Cloud Fuel.",
+  "main": "./lib/ET_Client.js",
+  "scripts": {
+    "lint": "node_modules/.bin/eslint .",
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:salesforcefuel/FuelSDK-Node.git"
+  },
+  "author": "Drew Simmons <drew.simmons@salesforce.com>",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "fuel-auth": "^3.3.0",
+    "fuel-rest": "^3.2.2",
+    "fuel-soap": "^2.2.3",
+    "lodash.merge": "^4.6.1",
+    "request": "^2.88.0",
+    "uuid": "^3.3.2"
+  },
+  "bugs": {
+    "url": "https://github.com/salesforcefuel/FuelSDK-Node/issues"
+  },
+  "homepage": "https://github.com/salesforcefuel/FuelSDK-Node",
+  "maintainers": [],
+  "directories": {},
+  "keywords": [
+    "fuel",
+    "exacttarget",
+    "salesforce",
+    "marketing",
+    "cloud",
+    "soap",
+    "rest",
+    "auth",
+    "sdk"
+  ]
+}
