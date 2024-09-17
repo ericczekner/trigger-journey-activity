@@ -95,35 +95,27 @@ define(["postmonger"], function (Postmonger) {
       .text()
       .trim();
 
+    var selectedAssetId = $('input[name="asset"]:checked').val();
+    var selectedAssetName = $('input[name="asset"]:checked')
+      .closest("label")
+      .text()
+      .trim();
+
     payload.arguments.execute.inArguments = [
       {
         contactKey: "{{Contact.Key}}",
         selectedJourneyId: selectedJourneyId || null,
         selectedJourneyAPIEventKey: selectedApiEventKey || null,
         selectedJourneyName: selectedJourneyName || "No journey selected",
+        selectedAssetId: selectedAssetId || null,
+        selectedAssetName: selectedAssetName || "No asset selected",
         payload: entrySourceData,
         uuid: uniqueId, // Use the existing or new unique identifier
       },
     ];
 
-    // var selectedAssetId = $('input[name="asset"]:checked').val();
-    // var selectedAssetName = $('input[name="asset"]:checked')
-    //   .closest("label")
-    //   .text()
-    //   .trim();
-    // console.log("Selected Asset: " + selectedAssetId);
-    // console.log("Selected Asset Name:" + selectedAssetName);
-    // payload.arguments.execute.inArguments = [
-    //   {
-    //     contactKey: "{{Contact.Key}}",
-    //     selectedAssetId: selectedAssetId || null,
-    //     selectedAssetName: selectedAssetName || "No asset selected",
-    //     payload: selectedAssetName,
-    //     uuid: uniqueId, // Use the existing or new unique identifier
-    //   },
-    // ];
-
-    console.log("Payload", payload);
+    console.log("Payload", JSON.stringify(payload));
+    console.log("Execute in arguments", payload.arguments.execute.inArguments);
     payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
   }
