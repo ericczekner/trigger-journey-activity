@@ -19,7 +19,7 @@ define(["postmonger"], function (Postmonger) {
     connection.trigger("requestTokens");
     connection.trigger("requestEndpoints");
     //remove this before pushing to prod
-    //initialize();
+    initialize();
   }
 
   connection.trigger("requestTriggerEventDefinition");
@@ -71,45 +71,47 @@ define(["postmonger"], function (Postmonger) {
       ? payload.arguments.execute.inArguments
       : [];
 
-    // var selectedJourneyId = null;
-    // if (inArguments.length > 0) {
-    //   selectedJourneyId = inArguments[0].selectedJourneyId;
-    // }
+    var selectedJourneyId = null;
+    if (inArguments.length > 0) {
+      selectedJourneyId = inArguments[0].selectedJourneyId;
+    }
 
     var selectedAssetiD = null;
     if (inArguments.length > 0) {
       selectedAssetiD = inArguments[0].selectedAssetId;
     }
 
-    // fetchJourneys(selectedJourneyId);
+    fetchJourneys(selectedJourneyId);
     fetchAssets(selectedAssetiD);
   }
 
   function save() {
-    // var selectedJourneyId = $('input[name="journey"]:checked').val();
-    // var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
-    // var selectedJourneyName = $('input[name="journey"]:checked')
-    //   .closest("label")
-    //   .text()
-    //   .trim();
+    var payload = {};
+    var selectedJourneyId = $('input[name="journey"]:checked').val();
+    var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
+    var selectedJourneyName = $('input[name="journey"]:checked')
+      .closest("label")
+      .text()
+      .trim();
 
-    // payload.arguments.execute.inArguments = [
-    //   {
-    //     contactKey: "{{Contact.Key}}",
-    //     selectedJourneyId: selectedJourneyId || null,
-    //     selectedJourneyAPIEventKey: selectedApiEventKey || null,
-    //     selectedJourneyName: selectedJourneyName || "No journey selected",
-    //     payload: entrySourceData,
-    //     uuid: uniqueId, // Use the existing or new unique identifier
-    //   },
-    // ];
+    payload.arguments.execute.inArguments = [
+      {
+        contactKey: "{{Contact.Key}}",
+        selectedJourneyId: selectedJourneyId || null,
+        selectedJourneyAPIEventKey: selectedApiEventKey || null,
+        selectedJourneyName: selectedJourneyName || "No journey selected",
+        payload: entrySourceData,
+        uuid: uniqueId, // Use the existing or new unique identifier
+      },
+    ];
 
     var selectedAssetId = $('input[name="asset"]:checked').val();
     var selectedAssetName = $('input[name="asset"]:checked')
       .closest("label")
       .text()
       .trim();
-
+    console.log("Selected Asset: " + selectedAssetId);
+    console.log("Selected Asset Name:" + selectedAssetName);
     payload.arguments.execute.inArguments = [
       {
         contactKey: "{{Contact.Key}}",

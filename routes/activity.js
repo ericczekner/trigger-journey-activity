@@ -33,6 +33,8 @@ exports.execute = async function (req, res) {
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
+    console.log("Executing journey with data:", data);
+
     const token = await retrieveToken();
     const response = await triggerJourney(token, contactKey, APIEventKey, data);
 
