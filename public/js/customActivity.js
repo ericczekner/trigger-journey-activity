@@ -56,6 +56,7 @@ define(["postmonger"], function (Postmonger) {
 
     connection.trigger("requestSchema");
     connection.on("requestedSchema", function (data) {
+      console.log("schema data");
       schema = data["schema"];
       entrySourceData = addEntrySourceAttributesToInArguments(schema);
     });
@@ -136,7 +137,6 @@ define(["postmonger"], function (Postmonger) {
       },
       success: function (response) {
         journeys = response.items.filter((journey) => {
-          console.log("Journey default: " + journey.defaults);
           if (journey.defaults && journey.defaults.email) {
             let apiEventEmail = journey.defaults.email.find((email) =>
               email.includes("APIEvent")

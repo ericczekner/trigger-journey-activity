@@ -11,7 +11,7 @@ const activity = require("./routes/activity");
 const app = express();
 
 // Configure Express
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3001);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
