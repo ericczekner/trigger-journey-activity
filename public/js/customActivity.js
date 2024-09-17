@@ -56,7 +56,8 @@ define(["postmonger"], function (Postmonger) {
 
     connection.trigger("requestSchema");
     connection.on("requestedSchema", function (data) {
-      console.log("schema data");
+      console.log("schema data" + data);
+      console.log(data);
       schema = data["schema"];
       entrySourceData = addEntrySourceAttributesToInArguments(schema);
     });
