@@ -56,7 +56,6 @@ define(["postmonger"], function (Postmonger) {
 
     connection.trigger("requestSchema");
     connection.on("requestedSchema", function (data) {
-      console.log("schema data" + data);
       console.log(data);
       schema = data["schema"];
       entrySourceData = addEntrySourceAttributesToInArguments(schema);
@@ -115,7 +114,10 @@ define(["postmonger"], function (Postmonger) {
     ];
 
     console.log("Payload", JSON.stringify(payload));
-    console.log("Execute in arguments", payload.arguments.execute.inArguments);
+    console.log(
+      "Execute in arguments",
+      JSON.stringify(payload.arguments.execute.inArguments)
+    );
     payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
   }
