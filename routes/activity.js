@@ -28,10 +28,15 @@ exports.save = async function (req, res) {
 
 function broadcastToClients(content, wss) {
   console.log("Broadcasting to clients");
+  const message = {
+    type: "content",
+    assetType: "htmlblock",
+    content: content,
+  };
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       console.log("Web Socket is open");
-      client.send(JSON.stringify(content));
+      client.send(JSON.stringify(message));
     }
   });
 }

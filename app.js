@@ -59,7 +59,7 @@ wss.on("connection", function connection(ws) {
   });
 
   // Send a welcome message when a client connects
-  ws.send("Welcome to the WebSocket server!");
+  ws.send(JSON.stringify({ message: "Welcome to the WebSocket server!" }));
 });
 
 server.listen(app.get("port"), function () {
