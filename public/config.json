@@ -10,9 +10,9 @@
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "JourneyTrigger",
-      "description": "An activity that helps you trigger a journey from another journey.",
-      "step1Label": "Configure Activity"
+      "name": "In App Display",
+      "description": "An activity that displays content in a mobile app.",
+      "step1Label": "Select Content"
     }
   },
 
