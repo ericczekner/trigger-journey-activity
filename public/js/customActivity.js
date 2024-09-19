@@ -112,7 +112,7 @@ define(["postmonger"], function (Postmonger) {
   }
 
   function save(event) {
-    event.preventDefault();
+    // event.preventDefault();
     var selectedJourneyId = $('input[name="journey"]:checked').val();
     var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
     var selectedJourneyName = $('input[name="journey"]:checked')
