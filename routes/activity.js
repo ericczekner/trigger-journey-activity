@@ -32,16 +32,10 @@ exports.execute = async function (req, res) {
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
-    console.log(
-      "Rendering asset with id: " +
-        assetId +
-        " for contact: " +
-        contactKey +
-        " with data: " +
-        data
-    );
+    console.log("These are the inArguements: " + inArguments);
     const token = await retrieveToken();
     const response = await renderAsset(assetId, contactKey, data);
+    res.status(200).send("Execute");
     console.log("Asset rendered successfully:", response);
   } catch (err) {
     console.error("Error rendering asset: ", err);
