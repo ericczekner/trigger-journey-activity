@@ -52,14 +52,17 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", function connection(ws) {
   console.log("New WebSocket connection established");
 
-  // Handle messages received from clients (React Native app)
   ws.on("message", function incoming(message) {
     console.log("received: %s", message);
-    // Handle incoming messages (you can expand this as needed)
   });
 
   // Send a welcome message when a client connects
   ws.send(JSON.stringify({ message: "Welcome to the WebSocket server!" }));
+
+  // Add a log to check when the client disconnects
+  ws.on("close", () => {
+    console.log("WebSocket connection closed");
+  });
 });
 
 server.listen(app.get("port"), function () {
