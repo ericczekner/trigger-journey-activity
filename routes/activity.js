@@ -28,6 +28,7 @@ exports.save = async function (req, res) {
 
 function broadcastToClients(content, wss) {
   console.log("Broadcasting to clients");
+  console.log(content);
   const message = {
     type: "content",
     assetType: "htmlblock",
