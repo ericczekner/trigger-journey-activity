@@ -32,7 +32,7 @@ exports.execute = async function (req, res) {
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
-    console.log("These are the inArguements: " + inArguments);
+    console.log("These are the inArguements: " + JSON.stringify(inArguments));
     const token = await retrieveToken();
     const response = await renderAsset(assetId, contactKey, data);
     res.status(200).send("Execute");
