@@ -39,6 +39,7 @@
     "require": "^2.4.20",
     "sfmc-fuelsdk-node": "^2.4.0",
     "superagent": "^5.1.2",
-    "uglify-js": "^3.7.2"
+    "uglify-js": "^3.7.2",
+    "ws": "^8.18.0"
   }
 }

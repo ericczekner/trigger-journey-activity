@@ -24,7 +24,19 @@ exports.save = async function (req, res) {
   }
 };
 
-exports.execute = async function (req, res) {
+/*Web Socket broadcasting function*/
+
+function broadcastToClients(content, wss) {
+  console.log("Broadcasting to clients");
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      console.log("Web Socket is open");
+      client.send(JSON.stringify(content));
+    }
+  });
+}
+
+exports.execute = async function (req, res, wss) {
   try {
     const inArguments = req.body.inArguments[0];
     const contactKey = inArguments.contactKey;
@@ -33,6 +45,9 @@ exports.execute = async function (req, res) {
     const uuid = inArguments.uuid;
 
     const response = await renderAsset(assetKey, contactKey, data);
+
+    broadcastToClients(response, wss);
+
     res.status(200).send("Execute");
     console.log("Asset rendered successfully:", response);
   } catch (err) {
