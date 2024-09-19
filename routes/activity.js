@@ -40,7 +40,7 @@ exports.execute = async function (req, res, wss) {
   try {
     const inArguments = req.body.inArguments[0];
     const contactKey = inArguments.contactKey;
-    const assetKey = inArguments.selectedAssetId;
+    const assetKey = inArguments.selectedAssetKey;
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
