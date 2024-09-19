@@ -22,8 +22,6 @@ if ("development" === app.get("env")) {
   app.use(errorhandler());
 }
 
-const wss = new WebSocket.Server({ server });
-
 app.get("/", routes.index);
 app.post("/login", routes.login);
 app.post("/logout", routes.logout);
@@ -48,6 +46,7 @@ app.get("/assetPreview", activity.renderContent);
 app.get("/activity/:uuid", activity.getActivityByUUID);
 
 const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 // Set up WebSocket connection
 wss.on("connection", function connection(ws) {
