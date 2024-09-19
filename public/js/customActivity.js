@@ -19,7 +19,7 @@ define(["postmonger"], function (Postmonger) {
     connection.trigger("requestTokens");
     connection.trigger("requestEndpoints");
     //remove this before pushing to prod
-    initialize();
+    //initialize();
   }
 
   connection.trigger("requestTriggerEventDefinition");
@@ -31,6 +31,31 @@ define(["postmonger"], function (Postmonger) {
       }
     }
   );
+
+  function renderAsset(assetId, contactKey, data) {
+    const payload = {
+      ContactKey: contactKey,
+      assetId: assetId,
+      Data: data,
+    };
+    console.log("Rendering asset with payload:", payload);
+
+    return $.ajax({
+      url: "/render",
+      type: "POST",
+
+      data: payload,
+      success: function (response) {
+        console.log("Asset rendered successfully:", response);
+        $("#content-output").html(response);
+        return true;
+      },
+      error: function (error) {
+        console.error("Error rendering asset:", error);
+        return false;
+      },
+    });
+  }
 
   function initialize(data) {
     console.log("Initializing Journey Builder activity with data:", data);
@@ -86,7 +111,8 @@ define(["postmonger"], function (Postmonger) {
     fetchAssets(selectedAssetiD);
   }
 
-  function save() {
+  function save(event) {
+    event.preventDefault();
     var selectedJourneyId = $('input[name="journey"]:checked').val();
     var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
     var selectedJourneyName = $('input[name="journey"]:checked')
@@ -100,26 +126,33 @@ define(["postmonger"], function (Postmonger) {
       .text()
       .trim();
 
-    payload.arguments.execute.inArguments = [
-      {
-        contactKey: "{{Contact.Key}}",
-        selectedJourneyId: selectedJourneyId || null,
-        selectedJourneyAPIEventKey: selectedApiEventKey || null,
-        selectedJourneyName: selectedJourneyName || "No journey selected",
-        selectedAssetId: selectedAssetId || null,
-        selectedAssetName: selectedAssetName || "No asset selected",
-        payload: entrySourceData,
-        uuid: uniqueId, // Use the existing or new unique identifier
-      },
-    ];
+    // payload.arguments.execute.inArguments = [
+    //   {
+    //     contactKey: "{{Contact.Key}}",
+    //     selectedJourneyId: selectedJourneyId || null,
+    //     selectedJourneyAPIEventKey: selectedApiEventKey || null,
+    //     selectedJourneyName: selectedJourneyName || "No journey selected",
+    //     selectedAssetId: selectedAssetId || null,
+    //     selectedAssetName: selectedAssetName || "No asset selected",
+    //     payload: entrySourceData,
+    //     uuid: uniqueId, // Use the existing or new unique identifier
+    //   },
+    // ];
 
-    console.log("Payload", JSON.stringify(payload));
-    console.log(
-      "Execute in arguments",
-      JSON.stringify(payload.arguments.execute.inArguments)
-    );
-    payload.metaData.isConfigured = true;
+    // console.log("Payload", JSON.stringify(payload));
+    // console.log(
+    //   "Execute in arguments",
+    //   JSON.stringify(payload.arguments.execute.inArguments)
+    // );
+    // payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
+    const data = {
+      ...entrySourceData,
+      assetId: selectedAssetId,
+      assetName: selectedAssetName,
+    };
+
+    renderAsset(selectedAssetId, "{{Contact.Key}}", data);
   }
 
   function fetchJourneys(selectedJourneyId = null) {
@@ -219,7 +252,7 @@ define(["postmonger"], function (Postmonger) {
           $("#asset-loading-message").hide();
           $("#asset-radios").show();
         }
-
+        console.log(assets);
         return assets;
       },
       error: function (xhr, status, error) {
@@ -235,11 +268,12 @@ define(["postmonger"], function (Postmonger) {
     $radioGroup.empty();
     console.log("Selected Asset: " + selectedAssetId);
     assets.forEach(function (asset) {
-      console.log(asset);
+      console.log(asset.customerKey);
       var $radio = $("<input>", {
         type: "radio",
         name: "asset",
-        value: asset.id,
+        value: asset.customerKey,
+        key: asset.customerKey,
       });
 
       console.log(
@@ -262,4 +296,5 @@ define(["postmonger"], function (Postmonger) {
       );
     });
   }
+  window.save = save;
 });

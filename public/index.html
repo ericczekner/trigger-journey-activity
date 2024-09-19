@@ -20,7 +20,14 @@
       })();
     </script>
   </head>
-
+  <script>
+    require.config({
+      paths: {
+        postmonger: "postmonger",
+      },
+    });
+    require(["customActivity"]);
+  </script>
   <body>
     <h1>Select the asset to use in your display</h1>
     <form id="journey-configuration-form">
@@ -31,5 +38,8 @@
       <div id="asset-loading-message">Your assets are loading...</div>
       <div class="radio-group" id="asset-radios"></div>
     </form>
+    <button onclick="save(event)">Save</button>
+
+    <div id="content-output"></div>
   </body>
 </html>

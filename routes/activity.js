@@ -123,6 +123,49 @@ async function triggerJourney(token, contactKey, APIEventKey, data) {
   }
 }
 
+/*Function to render an asset via a cloudpage code resource*/
+async function renderAsset(assetId, contactKey, data) {
+  console.log(assetId, contactKey, data);
+  const token = await retrieveToken();
+  const localData = {
+    subscriberKey: "1234",
+  };
+  const payload = {
+    ContactKey: contactKey,
+    assetId: assetId,
+    Data: localData,
+  };
+  console.log("Rendering asset with payload:", payload);
+  const resp = await axios.post(
+    "https://mcbf8s0h5zzztdqn8-zf3kc5pvb4.pub.sfmc-content.com/ns3jakmlwws",
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log("Response from asset render:", resp.data);
+
+  return resp.data.body;
+}
+
+/*Handler for posting content rendering*/
+exports.renderContent = async function (req, res) {
+  const contactKey = req.body.contactKey;
+  const data = req.body.data;
+  const assetId = req.body.assetId;
+
+  try {
+    const response = await renderAsset(assetId, contactKey, data);
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error rendering asset:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 /*
  * GET Handler for /journeys route
  */
