@@ -72,18 +72,18 @@ define(["postmonger"], function (Postmonger) {
       ? payload.arguments.execute.inArguments
       : [];
 
-    var selectedAssetiD = null;
+    var selectedAssetKey = null;
     if (inArguments.length > 0) {
-      selectedAssetiD = inArguments[0].selectedAssetId;
+      selectedAssetKey = inArguments[0].selectedAssetKey;
     }
 
-    fetchAssets(selectedAssetiD);
+    fetchAssets(selectedAssetKey);
   }
 
   function save() {
     // event.preventDefault();
 
-    var selectedAssetId = $('input[name="asset"]:checked').val();
+    var selectedAssetKey = $('input[name="asset"]:checked').val();
     var selectedAssetName = $('input[name="asset"]:checked')
       .closest("label")
       .text()
@@ -92,7 +92,7 @@ define(["postmonger"], function (Postmonger) {
     payload.arguments.execute.inArguments = [
       {
         contactKey: "{{Contact.Key}}",
-        selectedAssetId: selectedAssetId || null,
+        selectedAssetKey: selectedAssetKey || null,
         selectedAssetName: selectedAssetName || "No asset selected",
         payload: entrySourceData,
         uuid: uniqueId, // Use the existing or new unique identifier
@@ -114,7 +114,7 @@ define(["postmonger"], function (Postmonger) {
   }
 
   /* Function to retrieve assets of the freeform content block type */
-  function fetchAssets(selectedAssetId = null) {
+  function fetchAssets(selectedAssetKey = null) {
     return $.ajax({
       url: "/assets",
       type: "GET",
@@ -130,7 +130,7 @@ define(["postmonger"], function (Postmonger) {
             "No Free Form Content blocks were found. Create a free form content block to select it."
           );
         } else {
-          populateAssets(assets, selectedAssetId);
+          populateAssets(assets, selectedAssetKey);
           $("#asset-loading-message").hide();
           $("#asset-radios").show();
         }
@@ -147,10 +147,10 @@ define(["postmonger"], function (Postmonger) {
   }
 
   //Show the user the assets to choose from
-  function populateAssets(assets, selectedAssetId = null) {
+  function populateAssets(assets, selectedAssetKey = null) {
     var $radioGroup = $("#asset-radios");
     $radioGroup.empty();
-    console.log("Selected Asset: " + selectedAssetId);
+    console.log("Selected Asset: " + selectedAssetKey);
     assets.forEach(function (asset) {
       console.log(asset.customerKey);
       var $radio = $("<input>", {
@@ -161,14 +161,15 @@ define(["postmonger"], function (Postmonger) {
       });
 
       console.log(
-        "Comparing asset.id: " +
-          asset.id +
-          " with selectedAssetId: " +
-          selectedAssetId
+        "Comparing asset.customerKey: " +
+          asset.customerKey +
+          " with selectedAssetKey: " +
+          selectedAssetKey
       );
-      if (String(asset.id) === String(selectedAssetId)) {
+      if (String(asset.customerKey) === String(selectedAssetKey)) {
         console.log(
-          "Match found, setting radio as checked for asset.id: " + asset.id
+          "Match found, setting radio as checked for asset.customerKey: " +
+            asset.customerKey
         );
         $radio.prop("checked", true);
       }

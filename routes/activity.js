@@ -28,7 +28,7 @@ exports.execute = async function (req, res) {
   try {
     const inArguments = req.body.inArguments[0];
     const contactKey = inArguments.contactKey;
-    const assetId = inArguments.selectedAssetId;
+    const assetId = inArguments.selectedAssetKey;
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
