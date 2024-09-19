@@ -146,13 +146,13 @@ define(["postmonger"], function (Postmonger) {
     );
     payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
-    const data = {
-      ...entrySourceData,
-      assetId: selectedAssetId,
-      assetName: selectedAssetName,
-    };
+    // const data = {
+    //   ...entrySourceData,
+    //   assetId: selectedAssetId,
+    //   assetName: selectedAssetName,
+    // };
 
-    renderAsset(selectedAssetId, "{{Contact.Key}}", data);
+    // renderAsset(selectedAssetId, "{{Contact.Key}}", data);
   }
 
   function fetchJourneys(selectedJourneyId = null) {
