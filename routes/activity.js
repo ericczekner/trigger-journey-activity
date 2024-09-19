@@ -28,47 +28,72 @@ exports.execute = async function (req, res) {
   try {
     const inArguments = req.body.inArguments[0];
     const contactKey = inArguments.contactKey;
-    const APIEventKey = inArguments.selectedJourneyAPIEventKey;
     const assetId = inArguments.selectedAssetId;
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
-    console.log("Executing journey with data:", data);
-
+    console.log(
+      "Rendering asset with id: " +
+        assetId +
+        " for contact: " +
+        contactKey +
+        " with data: " +
+        data
+    );
     const token = await retrieveToken();
-    const response = await triggerJourney(token, contactKey, APIEventKey, data);
-
-    const responsePayload = {
-      uuid: uuid,
-      contactKey: contactKey,
-      triggerDate: new Date(),
-      status: response.status,
-      errorLog: response.error ? response.error.message : null,
-    };
-
-    await saveToDatabase(responsePayload);
-
-    res.status(200).send("Execute");
-  } catch (error) {
-    console.error("Error executing journey:", error);
-
-    const responsePayload = {
-      uuid: req.body.inArguments[0].uuid,
-      contactKey: req.body.inArguments[0].contactKey,
-      triggerDate: new Date(),
-      status: "Error",
-      errorLog: error.message,
-    };
-
-    try {
-      await saveToDatabase(responsePayload);
-    } catch (dbError) {
-      console.error("Error saving error log to database:", dbError);
-    }
-
-    res.status(200).send("Execute"); // Ensure the journey continues
+    const response = await renderAsset(assetId, contactKey, data);
+    console.log("Asset rendered successfully:", response);
+  } catch (err) {
+    console.error("Error rendering asset: ", err);
+    res.status(500).send("Error rendering asset");
   }
 };
+
+// exports.execute = async function (req, res) {
+//   try {
+//     const inArguments = req.body.inArguments[0];
+//     const contactKey = inArguments.contactKey;
+//     const APIEventKey = inArguments.selectedJourneyAPIEventKey;
+//     const assetId = inArguments.selectedAssetId;
+//     const data = inArguments.payload;
+//     const uuid = inArguments.uuid;
+
+//     console.log("Executing journey with data:", data);
+
+//     const token = await retrieveToken();
+//     const response = await triggerJourney(token, contactKey, APIEventKey, data);
+
+//     const responsePayload = {
+//       uuid: uuid,
+//       contactKey: contactKey,
+//       triggerDate: new Date(),
+//       status: response.status,
+//       errorLog: response.error ? response.error.message : null,
+//     };
+
+//     await saveToDatabase(responsePayload);
+
+//     res.status(200).send("Execute");
+//   } catch (error) {
+//     console.error("Error executing journey:", error);
+
+//     const responsePayload = {
+//       uuid: req.body.inArguments[0].uuid,
+//       contactKey: req.body.inArguments[0].contactKey,
+//       triggerDate: new Date(),
+//       status: "Error",
+//       errorLog: error.message,
+//     };
+
+//     try {
+//       await saveToDatabase(responsePayload);
+//     } catch (dbError) {
+//       console.error("Error saving error log to database:", dbError);
+//     }
+
+//     res.status(200).send("Execute"); // Ensure the journey continues
+//   }
+// };
 
 exports.publish = function (req, res) {
   res.status(200).send("Publish");
@@ -148,7 +173,7 @@ async function renderAsset(assetId, contactKey, data) {
   );
   console.log("Response from asset render:", resp.data);
 
-  return resp.data.body;
+  return resp.data;
 }
 
 /*Handler for posting content rendering*/
