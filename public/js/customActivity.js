@@ -172,6 +172,7 @@ define(["postmonger"], function (Postmonger) {
             asset.customerKey
         );
         $radio.prop("checked", true);
+        showAsset(asset);
       }
 
       $radio.on("change", function () {
