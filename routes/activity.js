@@ -27,8 +27,8 @@ exports.save = async function (req, res) {
 /*Web Socket broadcasting function*/
 
 function broadcastToClients(content, wss) {
-  console.log("Broadcasting to clients");
-  console.log(content);
+  console.log("Broadcasting to clients: " + content);
+
   const message = {
     type: "content",
     assetType: "htmlblock",
