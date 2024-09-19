@@ -52,16 +52,32 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", function connection(ws) {
   console.log("New WebSocket connection established");
 
-  ws.on("message", function incoming(message) {
-    console.log("received: %s", message);
-  });
-
   // Send a welcome message when a client connects
   ws.send(JSON.stringify({ message: "Welcome to the WebSocket server!" }));
 
-  // Add a log to check when the client disconnects
+  // Keep the connection alive by sending a ping every 50 seconds
+  const pingInterval = setInterval(() => {
+    if (ws.readyState === 1) {
+      // 1 corresponds to WebSocket.OPEN
+      console.log("Sending ping to client to keep connection alive");
+      ws.ping(); // Send a ping to keep the connection alive
+    }
+  }, 50000); // Ping every 50 seconds
+
+  ws.on("pong", () => {
+    console.log("Pong received from client");
+  });
+
+  // Clean up when the connection is closed
   ws.on("close", () => {
     console.log("WebSocket connection closed");
+    clearInterval(pingInterval); // Stop pinging when the connection closes
+  });
+
+  // Handle any errors
+  ws.on("error", (err) => {
+    console.error("WebSocket error:", err);
+    clearInterval(pingInterval); // Stop pinging if there's an error
   });
 });
 
