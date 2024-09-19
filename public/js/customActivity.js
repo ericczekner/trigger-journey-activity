@@ -126,25 +126,25 @@ define(["postmonger"], function (Postmonger) {
       .text()
       .trim();
 
-    // payload.arguments.execute.inArguments = [
-    //   {
-    //     contactKey: "{{Contact.Key}}",
-    //     selectedJourneyId: selectedJourneyId || null,
-    //     selectedJourneyAPIEventKey: selectedApiEventKey || null,
-    //     selectedJourneyName: selectedJourneyName || "No journey selected",
-    //     selectedAssetId: selectedAssetId || null,
-    //     selectedAssetName: selectedAssetName || "No asset selected",
-    //     payload: entrySourceData,
-    //     uuid: uniqueId, // Use the existing or new unique identifier
-    //   },
-    // ];
+    payload.arguments.execute.inArguments = [
+      {
+        contactKey: "{{Contact.Key}}",
+        selectedJourneyId: selectedJourneyId || null,
+        selectedJourneyAPIEventKey: selectedApiEventKey || null,
+        selectedJourneyName: selectedJourneyName || "No journey selected",
+        selectedAssetId: selectedAssetId || null,
+        selectedAssetName: selectedAssetName || "No asset selected",
+        payload: entrySourceData,
+        uuid: uniqueId, // Use the existing or new unique identifier
+      },
+    ];
 
-    // console.log("Payload", JSON.stringify(payload));
-    // console.log(
-    //   "Execute in arguments",
-    //   JSON.stringify(payload.arguments.execute.inArguments)
-    // );
-    // payload.metaData.isConfigured = true;
+    console.log("Payload", JSON.stringify(payload));
+    console.log(
+      "Execute in arguments",
+      JSON.stringify(payload.arguments.execute.inArguments)
+    );
+    payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
     const data = {
       ...entrySourceData,
