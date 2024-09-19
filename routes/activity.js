@@ -146,13 +146,11 @@ async function triggerJourney(token, contactKey, APIEventKey, data) {
 async function renderAsset(assetId, contactKey, data) {
   console.log(assetId, contactKey, data);
   const token = await retrieveToken();
-  const localData = {
-    subscriberKey: "1234",
-  };
+
   const payload = {
     ContactKey: contactKey,
     assetId: assetId,
-    Data: localData,
+    Data: data,
   };
   console.log("Rendering asset with payload:", payload);
   const resp = await axios.post(
