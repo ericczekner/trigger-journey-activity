@@ -28,13 +28,11 @@ exports.execute = async function (req, res) {
   try {
     const inArguments = req.body.inArguments[0];
     const contactKey = inArguments.contactKey;
-    const assetId = inArguments.selectedAssetKey;
+    const assetKey = inArguments.selectedAssetId;
     const data = inArguments.payload;
     const uuid = inArguments.uuid;
 
-    console.log("These are the inArguements: " + JSON.stringify(inArguments));
-    const token = await retrieveToken();
-    const response = await renderAsset(assetId, contactKey, data);
+    const response = await renderAsset(assetKey, contactKey, data);
     res.status(200).send("Execute");
     console.log("Asset rendered successfully:", response);
   } catch (err) {
@@ -73,14 +71,13 @@ async function retrieveToken() {
 }
 
 /*Function to render an asset via a cloudpage code resource*/
-async function renderAsset(assetId, contactKey, data) {
-  console.log(assetId, contactKey, data);
+async function renderAsset(assetKey, contactKey, data) {
   const token = await retrieveToken();
 
   const payload = {
     ContactKey: contactKey,
-    assetId: assetId,
-    Data: data,
+    assetKey: assetKey,
+    data: data,
   };
   console.log("Rendering asset with payload:", payload);
   const resp = await axios.post(
@@ -96,6 +93,40 @@ async function renderAsset(assetId, contactKey, data) {
   console.log("Response from asset render:", resp.data);
 
   return resp.data;
+}
+
+/*Handler for posting content rendering*/
+exports.renderContent = async function (req, res) {
+  console.log("user is asking to render content for a preview");
+  const assetKey = req.query.assetKey;
+
+  try {
+    const response = await retrieveAsset(assetKey);
+    console.log(response.items[0]);
+    res.status(200).json(response.items[0]);
+  } catch (error) {
+    console.error("Error rendering asset:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+async function retrieveAsset(assetKey) {
+  const token = await retrieveToken();
+  const assetUrl = `${process.env.restBaseURL}/asset/v1/content/assets/?$filter=CustomerKey%20like%20'${assetKey}'`;
+
+  try {
+    const response = await axios.get(assetUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching asset:", error);
+    throw error;
+  }
 }
 
 /*

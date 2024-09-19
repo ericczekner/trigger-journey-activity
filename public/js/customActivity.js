@@ -174,11 +174,28 @@ define(["postmonger"], function (Postmonger) {
         $radio.prop("checked", true);
       }
 
+      $radio.on("change", function () {
+        showAsset(asset);
+      });
+
       $radioGroup.append(
         $("<label>", {
           text: asset.name,
         }).prepend($radio)
       );
+    });
+  }
+
+  function showAsset(asset) {
+    $("#asset-preview").html('<div class="loading-icon">Loading...</div>');
+    $.ajax({
+      url: "/assetPreview?assetKey=" + asset.customerKey,
+      type: "GET",
+      success: function (response) {
+        const content = response.content;
+
+        $("#asset-preview").html(content);
+      },
     });
   }
   window.save = save;

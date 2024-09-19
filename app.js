@@ -37,6 +37,8 @@ app.get("/journeys", activity.getJourneys);
 //Route to get assets
 app.get("/assets", activity.getAssets);
 
+app.get("/assetPreview", activity.renderContent);
+
 // New route to get activity data by UUID
 app.get("/activity/:uuid", activity.getActivityByUUID);
 

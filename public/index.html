@@ -30,12 +30,13 @@
   </script>
   <body>
     <h1>Select the asset to use in your display</h1>
+    <div class="container">
+      <form id="asset-configuration-form">
+        <div id="asset-loading-message">Your assets are loading...</div>
+        <div class="radio-group" id="asset-radios"></div>
+      </form>
 
-    <form id="asset-configuration-form">
-      <div id="asset-loading-message">Your assets are loading...</div>
-      <div class="radio-group" id="asset-radios"></div>
-    </form>
-
-    <div id="content-output"></div>
+      <div id="asset-preview" class="assetPreviewContainer"></div>
+    </div>
   </body>
 </html>
