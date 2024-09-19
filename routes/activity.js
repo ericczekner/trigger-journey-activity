@@ -27,17 +27,19 @@ exports.save = async function (req, res) {
 /*Web Socket broadcasting function*/
 
 function broadcastToClients(content, wss) {
-  console.log("Broadcasting to clients: " + content);
+  console.log("Broadcasting to clients:", content);
 
+  // Wrap the HTML content in a structured JSON object
   const message = {
     type: "content",
     assetType: "htmlblock",
-    content: content,
+    content: content, // Use the raw HTML content here
   };
+
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      console.log("Web Socket is open");
-      client.send(JSON.stringify(message));
+      console.log("Web Socket is open, sending content to client");
+      client.send(JSON.stringify(message)); // Send the structured JSON object
     }
   });
 }
