@@ -37,7 +37,8 @@ function broadcastToClients(content, wss) {
   };
 
   wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
+    // Use client.readyState === 1 (which corresponds to WebSocket.OPEN)
+    if (client.readyState === 1) {
       console.log("Web Socket is open, sending content to client");
       client.send(JSON.stringify(message));
     } else {
