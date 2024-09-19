@@ -43,52 +43,6 @@ exports.execute = async function (req, res) {
   }
 };
 
-// exports.execute = async function (req, res) {
-//   try {
-//     const inArguments = req.body.inArguments[0];
-//     const contactKey = inArguments.contactKey;
-//     const APIEventKey = inArguments.selectedJourneyAPIEventKey;
-//     const assetId = inArguments.selectedAssetId;
-//     const data = inArguments.payload;
-//     const uuid = inArguments.uuid;
-
-//     console.log("Executing journey with data:", data);
-
-//     const token = await retrieveToken();
-//     const response = await triggerJourney(token, contactKey, APIEventKey, data);
-
-//     const responsePayload = {
-//       uuid: uuid,
-//       contactKey: contactKey,
-//       triggerDate: new Date(),
-//       status: response.status,
-//       errorLog: response.error ? response.error.message : null,
-//     };
-
-//     await saveToDatabase(responsePayload);
-
-//     res.status(200).send("Execute");
-//   } catch (error) {
-//     console.error("Error executing journey:", error);
-
-//     const responsePayload = {
-//       uuid: req.body.inArguments[0].uuid,
-//       contactKey: req.body.inArguments[0].contactKey,
-//       triggerDate: new Date(),
-//       status: "Error",
-//       errorLog: error.message,
-//     };
-
-//     try {
-//       await saveToDatabase(responsePayload);
-//     } catch (dbError) {
-//       console.error("Error saving error log to database:", dbError);
-//     }
-
-//     res.status(200).send("Execute"); // Ensure the journey continues
-//   }
-// };
-
 exports.publish = function (req, res) {
   res.status(200).send("Publish");
 };
@@ -118,30 +72,6 @@ async function retrieveToken() {
   }
 }
 
-/*
- * Function to trigger a journey
- */
-async function triggerJourney(token, contactKey, APIEventKey, data) {
-  const triggerUrl = `${process.env.restBaseURL}/interaction/v1/events`;
-  const eventPayload = {
-    ContactKey: contactKey,
-    EventDefinitionKey: APIEventKey,
-    Data: data,
-  };
-  try {
-    const response = await axios.post(triggerUrl, eventPayload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return { status: "Success", error: null };
-  } catch (error) {
-    console.error("Error triggering journey:", error);
-    return { status: "Error", error: error };
-  }
-}
-
 /*Function to render an asset via a cloudpage code resource*/
 async function renderAsset(assetId, contactKey, data) {
   console.log(assetId, contactKey, data);
@@ -167,21 +97,6 @@ async function renderAsset(assetId, contactKey, data) {
 
   return resp.data;
 }
-
-/*Handler for posting content rendering*/
-exports.renderContent = async function (req, res) {
-  const contactKey = req.body.contactKey;
-  const data = req.body.data;
-  const assetId = req.body.assetId;
-
-  try {
-    const response = await renderAsset(assetId, contactKey, data);
-    res.status(200).json(response);
-  } catch (error) {
-    console.error("Error rendering asset:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 
 /*
  * GET Handler for /journeys route

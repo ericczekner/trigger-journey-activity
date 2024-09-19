@@ -32,31 +32,6 @@ define(["postmonger"], function (Postmonger) {
     }
   );
 
-  function renderAsset(assetId, contactKey, data) {
-    const payload = {
-      ContactKey: contactKey,
-      assetId: assetId,
-      Data: data,
-    };
-    console.log("Rendering asset with payload:", payload);
-
-    return $.ajax({
-      url: "/render",
-      type: "POST",
-
-      data: payload,
-      success: function (response) {
-        console.log("Asset rendered successfully:", response);
-        $("#content-output").html(response);
-        return true;
-      },
-      error: function (error) {
-        console.error("Error rendering asset:", error);
-        return false;
-      },
-    });
-  }
-
   function initialize(data) {
     console.log("Initializing Journey Builder activity with data:", data);
     if (data) {
@@ -97,29 +72,16 @@ define(["postmonger"], function (Postmonger) {
       ? payload.arguments.execute.inArguments
       : [];
 
-    var selectedJourneyId = null;
-    if (inArguments.length > 0) {
-      selectedJourneyId = inArguments[0].selectedJourneyId;
-    }
-
     var selectedAssetiD = null;
     if (inArguments.length > 0) {
       selectedAssetiD = inArguments[0].selectedAssetId;
     }
 
-    fetchJourneys(selectedJourneyId);
     fetchAssets(selectedAssetiD);
   }
 
   function save() {
     // event.preventDefault();
-    console.log("Saving event config");
-    var selectedJourneyId = $('input[name="journey"]:checked').val();
-    var selectedApiEventKey = apiEventKeyMap[selectedJourneyId]; // Retrieve the apiEventKey from the map
-    var selectedJourneyName = $('input[name="journey"]:checked')
-      .closest("label")
-      .text()
-      .trim();
 
     var selectedAssetId = $('input[name="asset"]:checked').val();
     var selectedAssetName = $('input[name="asset"]:checked')
@@ -130,9 +92,6 @@ define(["postmonger"], function (Postmonger) {
     payload.arguments.execute.inArguments = [
       {
         contactKey: "{{Contact.Key}}",
-        selectedJourneyId: selectedJourneyId || null,
-        selectedJourneyAPIEventKey: selectedApiEventKey || null,
-        selectedJourneyName: selectedJourneyName || "No journey selected",
         selectedAssetId: selectedAssetId || null,
         selectedAssetName: selectedAssetName || "No asset selected",
         payload: entrySourceData,
@@ -140,87 +99,8 @@ define(["postmonger"], function (Postmonger) {
       },
     ];
 
-    console.log("Payload", JSON.stringify(payload));
-    console.log(
-      "Execute in arguments",
-      JSON.stringify(payload.arguments.execute.inArguments)
-    );
     payload.metaData.isConfigured = true;
     connection.trigger("updateActivity", payload);
-    // const data = {
-    //   ...entrySourceData,
-    //   assetId: selectedAssetId,
-    //   assetName: selectedAssetName,
-    // };
-
-    // renderAsset(selectedAssetId, "{{Contact.Key}}", data);
-  }
-
-  function fetchJourneys(selectedJourneyId = null) {
-    $.ajax({
-      url: "/journeys",
-      type: "GET",
-      beforeSend: function () {
-        $("#journey-loading-message").show();
-        $("#journey-radios").hide();
-      },
-      success: function (response) {
-        journeys = response.items.filter((journey) => {
-          if (journey.defaults && journey.defaults.email) {
-            let apiEventEmail = journey.defaults.email.find((email) =>
-              email.includes("APIEvent")
-            );
-            if (apiEventEmail) {
-              let apiEventKey = apiEventEmail.match(/APIEvent-([a-z0-9-]+)/)[0];
-              apiEventKeyMap[journey.id] = apiEventKey; // Store the apiEventKey in the map
-              return apiEventKey !== currentApiEventKey;
-            }
-          }
-          return false;
-        });
-
-        if (journeys.length === 0) {
-          $("#journey-loading-message").text(
-            "No journeys with API Event entry source were found."
-          );
-        } else {
-          populateJourneys(journeys, selectedJourneyId);
-          $("#journey-loading-message").hide();
-          $("#journey-radios").show();
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error fetching journeys:", error);
-        $("#journey-loading-message").text(
-          "Error loading journeys. Please try again."
-        );
-      },
-    });
-  }
-
-  function populateJourneys(journeys, selectedJourneyId = null) {
-    var $radioGroup = $("#journey-radios");
-    $radioGroup.empty();
-
-    journeys.forEach(function (journey) {
-      var apiEventKey = apiEventKeyMap[journey.id];
-      var $radio = $("<input>", {
-        type: "radio",
-        name: "journey",
-        value: journey.id,
-        "data-api-event-key": apiEventKey, // Add apiEventKey as a data attribute
-      });
-
-      if (journey.id === selectedJourneyId) {
-        $radio.prop("checked", true);
-      }
-
-      $radioGroup.append(
-        $("<label>", {
-          text: journey.name,
-        }).prepend($radio)
-      );
-    });
   }
 
   function addEntrySourceAttributesToInArguments(schema) {
@@ -232,6 +112,7 @@ define(["postmonger"], function (Postmonger) {
     }
     return data;
   }
+
   /* Function to retrieve assets of the freeform content block type */
   function fetchAssets(selectedAssetId = null) {
     return $.ajax({
@@ -264,6 +145,8 @@ define(["postmonger"], function (Postmonger) {
       },
     });
   }
+
+  //Show the user the assets to choose from
   function populateAssets(assets, selectedAssetId = null) {
     var $radioGroup = $("#asset-radios");
     $radioGroup.empty();
