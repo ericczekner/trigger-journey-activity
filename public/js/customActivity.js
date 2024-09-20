@@ -13,7 +13,7 @@ define(["postmonger"], function (Postmonger) {
   var lastStepEnabled = false;
   var steps = [
     // initialize to the same value as what's set in config.json for consistency
-    { label: "Step 1", key: "step1" },
+    { label: "Select Asset", key: "step1" },
     { label: "Step 2", key: "step2" },
     { label: "Step 3", key: "step3" },
     { label: "Step 4", key: "step4", active: false },
@@ -117,8 +117,6 @@ define(["postmonger"], function (Postmonger) {
     }
 
     currentStep = step;
-
-    $(".step").hide();
 
     switch (currentStep.key) {
       case "step1":
